@@ -1,0 +1,6 @@
+{
+  "name": "SmartLecture AI",
+  "description": "AI-powered learning application converting lectures into intelligent notes, summaries, important points, and quizzes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

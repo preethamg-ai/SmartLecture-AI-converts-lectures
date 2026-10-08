@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartLecture AI — Upload Lecture</title>
+    <meta name="description" content="Upload PDF, DOCX, TXT or audio files to generate AI summaries, comprehensive notes, and practice quizzes." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
+  </head>
+  <body>
+    <div class="ambient-background">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+      <div class="ambient-grid"></div>
+    </div>
+
+    <div id="sidebar-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:45;display:none;"></div>
+
+    <div class="app-container">
+      <!-- SIDEBAR -->
+      <aside class="app-sidebar" id="app-sidebar">
+        <div>
+          <div class="sidebar-header">
+            <a href="index.html" class="sidebar-brand">
+              <div class="brand-icon">
+                <i data-lucide="brain" style="width: 22px; height: 22px;"></i>
+              </div>
+              <div>
+                <span class="brand-title">SmartLecture</span>
+                <span class="brand-tag">AI</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="sidebar-nav">
+            <div class="nav-label">Navigation</div>
+            <a href="index.html" class="nav-item">
+              <i data-lucide="layout-dashboard" class="nav-icon"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="upload.html" class="nav-item active">
+              <i data-lucide="upload-cloud" class="nav-icon"></i>
+              <span>Upload Lecture</span>
+            </a>
+            <a href="notes.html" class="nav-item">
+              <i data-lucide="book-open" class="nav-icon"></i>
+              <span>My Notes</span>
+              <span class="badge-pill">24</span>
+            </a>
+            <a href="quiz.html" class="nav-item">
+              <i data-lucide="file-check-2" class="nav-icon"></i>
+              <span>Quiz</span>
+              <span class="badge-pill">Live</span>
+            </a>
+            <a href="analytics.html" class="nav-item">
+              <i data-lucide="bar-chart-3" class="nav-icon"></i>
+              <span>Analytics</span>
+            </a>
+            <a href="notes.html?filter=saved" class="nav-item">
+              <i data-lucide="star" class="nav-icon"></i>
+              <span>Saved</span>
+            </a>
+            
+            <div class="nav-label" style="margin-top: 0.8rem;">Preferences</div>
+            <a href="settings.html" class="nav-item">
+              <i data-lucide="settings" class="nav-icon"></i>
+              <span>Settings</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          <div class="user-profile-card">
+            <div class="user-avatar-wrap">
+              <div class="user-avatar">P</div>
+              <div class="status-indicator"></div>
+            </div>
+            <div class="user-details">
+              <div class="user-name">Preetham</div>
+              <div class="user-subtext">
+                <span class="online-dot"></span>
+                <span>Student · BCA Sem 6</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT WRAPPER -->
+      <main class="main-wrapper">
+        <header class="app-header">
+          <div class="header-left">
+            <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" aria-label="Toggle menu">
+              <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
+            </button>
+            <div class="search-bar">
+              <i data-lucide="search" style="width: 17px; height: 17px; color: var(--text-muted);"></i>
+              <input type="text" id="global-search-input" placeholder="Search lectures, topics, concepts..." />
+              <span class="search-shortcut">⌘K</span>
+            </div>
+          </div>
+
+          <div class="header-right">
+            <a href="index.html" class="btn-glass btn-glass-sm">
+              <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+              <span>Back to Dashboard</span>
+            </a>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <div class="upload-flow-container">
+            <!-- Header section -->
+            <div style="margin-bottom: 2rem; text-align: center;">
+              <span style="font-size: 0.85rem; font-weight: 700; color: var(--accent-cyan-light); letter-spacing: 0.06em; text-transform: uppercase;">
+                Multi-format Lecture Ingestion
+              </span>
+              <h1 style="font-size: 2.2rem; font-weight: 800; letter-spacing: -0.03em; margin: 0.4rem 0 0.5rem; color: #fff;">
+                Upload Your <span class="gradient-text">Lecture File</span>
+              </h1>
+              <p style="color: var(--text-secondary); max-width: 580px; margin: 0 auto; font-size: 0.98rem;">
+                Drop university recordings or documents. SmartLecture AI transcribes, cleans, and structures notes in seconds.
+              </p>
+            </div>
+
+            <!-- Upload Area -->
+            <div class="glass-panel upload-drop-card" id="upload-page-dropzone" style="padding: 3.5rem 2rem;">
+              <input type="file" id="lecture-file-input" style="display: none;" accept=".pdf,.docx,.txt,.mp3,.wav" />
+              <div class="upload-drop-icon-wrap" style="width: 80px; height: 80px;">
+                <i data-lucide="upload-cloud" style="width: 42px; height: 42px;"></i>
+              </div>
+
+              <h2 style="font-size: 1.45rem; font-weight: 700; margin-bottom: 0.4rem; color: #fff;">
+                Drag &amp; drop your lecture here
+              </h2>
+              <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.92rem;">
+                Support for classroom recordings, audio memos, slides, and syllabus documents
+              </p>
+
+              <div style="display: flex; gap: 0.85rem; justify-content: center; align-items: center; margin-bottom: 1.5rem;">
+                <button class="btn-primary" onclick="document.getElementById('lecture-file-input').click();">
+                  <i data-lucide="folder-plus" style="width: 18px; height: 18px;"></i>
+                  <span>Browse Files</span>
+                </button>
+              </div>
+
+              <!-- Supported formats pills -->
+              <div class="supported-formats-pills">
+                <span class="format-pill">📄 PDF</span>
+                <span class="format-pill">📃 DOCX</span>
+                <span class="format-pill">📝 TXT</span>
+                <span class="format-pill">🎤 MP3</span>
+                <span class="format-pill">🎧 WAV</span>
+              </div>
+            </div>
+
+            <!-- Sample Lectures Selector -->
+            <div class="glass-panel glass-subtle" style="padding: 1.25rem 1.5rem; margin-top: 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <i data-lucide="sparkles" style="width: 18px; height: 18px; color: var(--accent-cyan-light);"></i>
+                <span style="font-size: 0.88rem; font-weight: 600; color: #e2e8f0;">Quick Demo? Try a sample lecture:</span>
+              </div>
+              <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                <button class="btn-glass btn-glass-sm sample-file-btn" data-filename="Operating_Systems_Paging.pdf" data-size="4.2 MB" data-type="application/pdf">
+                  📄 OS_Paging.pdf
+                </button>
+                <button class="btn-glass btn-glass-sm sample-file-btn" data-filename="DSA_Binary_Search_Trees.mp3" data-size="18.6 MB" data-type="audio/mp3">
+                  🎤 Trees_Lecture.mp3
+                </button>
+                <button class="btn-glass btn-glass-sm sample-file-btn" data-filename="Java_Multithreading_Sem6.docx" data-size="1.8 MB" data-type="application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                  📃 Java_Threads.docx
+                </button>
+              </div>
+            </div>
+
+            <!-- Upload Progress & Staged File Card -->
+            <div class="glass-panel upload-progress-card" id="upload-progress-card">
+              <div class="progress-header">
+                <div style="display: flex; align-items: center; gap: 0.85rem;">
+                  <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.3); display: flex; align-items: center; justify-content: center; color: #38bdf8;">
+                    <i data-lucide="file-check" style="width: 22px; height: 22px;"></i>
+                  </div>
+                  <div>
+                    <div id="selected-file-name" style="font-size: 1rem; font-weight: 700; color: #fff;">Lecture_File.pdf</div>
+                    <div style="display: flex; gap: 0.6rem; font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.15rem;">
+                      <span id="selected-file-size">4.2 MB</span>
+                      <span>·</span>
+                      <span id="selected-file-type">PDF DOCUMENT</span>
+                    </div>
+                  </div>
+                </div>
+                <div id="upload-progress-percent" style="font-size: 1.1rem; font-weight: 800; color: var(--accent-cyan-light); font-family: 'JetBrains Mono', monospace;">
+                  0%
+                </div>
+              </div>
+
+              <!-- Animated Progress Bar -->
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="upload-progress-fill"></div>
+              </div>
+
+              <div id="upload-status-text" style="font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.45rem;">
+                <i data-lucide="loader" style="width: 14px; height: 14px; animation: spin 1.5s linear infinite;"></i>
+                Uploading lecture file to AI engine...
+              </div>
+
+              <!-- After upload buttons -->
+              <div class="upload-action-buttons" id="upload-actions-wrap" style="display: none;">
+                <button class="btn-primary" id="btn-generate-notes" style="flex: 1;">
+                  <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
+                  <span>Generate Notes</span>
+                </button>
+                <button class="btn-primary" id="btn-generate-notes-quiz" style="flex: 1; background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);">
+                  <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+                  <span>Generate Notes + Quiz</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Advanced AI Options -->
+            <div class="glass-panel" style="padding: 1.5rem; margin-top: 1.75rem;">
+              <h3 style="font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="sliders" style="width: 18px; height: 18px; color: var(--accent-violet);"></i>
+                AI Generation Preferences
+              </h3>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                <div>
+                  <label style="display: block; font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.4rem; font-weight: 600;">Note Detail Level</label>
+                  <select class="form-control-glass" style="background: #0b1120;">
+                    <option value="detailed" selected>Comprehensive (Exam Ready)</option>
+                    <option value="concise">Concise Summary (Quick Revision)</option>
+                    <option value="bullet">Bullet Points Only</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="display: block; font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.4rem; font-weight: 600;">Target Difficulty</label>
+                  <select class="form-control-glass" style="background: #0b1120;">
+                    <option value="university" selected>College / University Standard</option>
+                    <option value="gate">GATE / Competitive Entrance</option>
+                    <option value="beginner">Beginner Conceptual</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="display: block; font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.4rem; font-weight: 600;">Code &amp; Math Equations</label>
+                  <select class="form-control-glass" style="background: #0b1120;">
+                    <option value="include" selected>Extract Code &amp; Math</option>
+                    <option value="textonly">Theory Only</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script src="/js/upload.js"></script>
+  </body>
+</html>

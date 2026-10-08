@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartLecture AI — Intelligent Lecture Notes & Quizzes</title>
+    <meta name="description" content="AI-powered lecture intelligence platform for college students: convert lectures into structured notes, summaries, practice questions, and MCQ quizzes." />
+    <meta property="og:title" content="SmartLecture AI — Intelligent Lecture Notes & Quizzes" />
+    <meta property="og:description" content="AI-powered lecture intelligence platform for college students: convert lectures into structured notes, summaries, practice questions, and MCQ quizzes." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Lucide Icons & Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <!-- Ambient liquid gradient background blobs -->
+    <div class="ambient-background">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+      <div class="ambient-grid"></div>
+    </div>
+
+    <!-- Mobile sidebar overlay -->
+    <div id="sidebar-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:45;display:none;"></div>
+
+    <div class="app-container">
+      <!-- SIDEBAR -->
+      <aside class="app-sidebar" id="app-sidebar">
+        <div>
+          <div class="sidebar-header">
+            <a href="index.html" class="sidebar-brand">
+              <div class="brand-icon">
+                <i data-lucide="brain" style="width: 22px; height: 22px;"></i>
+              </div>
+              <div>
+                <span class="brand-title">SmartLecture</span>
+                <span class="brand-tag">AI</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="sidebar-nav">
+            <div class="nav-label">Navigation</div>
+            <a href="index.html" class="nav-item active">
+              <i data-lucide="layout-dashboard" class="nav-icon"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="upload.html" class="nav-item">
+              <i data-lucide="upload-cloud" class="nav-icon"></i>
+              <span>Upload Lecture</span>
+            </a>
+            <a href="notes.html" class="nav-item">
+              <i data-lucide="book-open" class="nav-icon"></i>
+              <span>My Notes</span>
+              <span class="badge-pill">24</span>
+            </a>
+            <a href="quiz.html" class="nav-item">
+              <i data-lucide="file-check-2" class="nav-icon"></i>
+              <span>Quiz</span>
+              <span class="badge-pill">Live</span>
+            </a>
+            <a href="analytics.html" class="nav-item">
+              <i data-lucide="bar-chart-3" class="nav-icon"></i>
+              <span>Analytics</span>
+            </a>
+            <a href="notes.html?filter=saved" class="nav-item">
+              <i data-lucide="star" class="nav-icon"></i>
+              <span>Saved</span>
+            </a>
+            
+            <div class="nav-label" style="margin-top: 0.8rem;">Preferences</div>
+            <a href="settings.html" class="nav-item">
+              <i data-lucide="settings" class="nav-icon"></i>
+              <span>Settings</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- User profile card -->
+        <div class="sidebar-footer">
+          <div class="user-profile-card">
+            <div class="user-avatar-wrap">
+              <div class="user-avatar">P</div>
+              <div class="status-indicator"></div>
+            </div>
+            <div class="user-details">
+              <div class="user-name">Preetham</div>
+              <div class="user-subtext">
+                <span class="online-dot"></span>
+                <span>Student · BCA Sem 6</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT WRAPPER -->
+      <main class="main-wrapper">
+        <!-- Top App Header -->
+        <header class="app-header">
+          <div class="header-left">
+            <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" aria-label="Toggle menu">
+              <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
+            </button>
+            <div class="search-bar">
+              <i data-lucide="search" style="width: 17px; height: 17px; color: var(--text-muted);"></i>
+              <input type="text" id="global-search-input" placeholder="Search lectures, topics, concepts..." />
+              <span class="search-shortcut">⌘K</span>
+            </div>
+          </div>
+
+          <div class="header-right">
+            <div class="study-streak-badge">
+              <i data-lucide="flame" style="width: 17px; height: 17px;"></i>
+              <span>7 Day Streak</span>
+            </div>
+            <a href="upload.html" class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+              <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
+              <span>New Lecture</span>
+            </a>
+          </div>
+        </header>
+
+        <!-- PAGE CONTENT -->
+        <div class="page-content">
+          <!-- Top Greeting & Header -->
+          <section class="dashboard-hero">
+            <div class="greeting-text" id="dynamic-greeting">
+              Good morning 👋 <span style="font-weight:400;color:var(--text-muted);margin-left:0.4rem;">· Ready to learn smarter?</span>
+            </div>
+            <h1 class="hero-title">
+              Ready to learn <span class="gradient-text">smarter?</span>
+            </h1>
+            <p class="hero-subtitle">
+              Turn your lectures into intelligent notes and quizzes with AI.
+            </p>
+          </section>
+
+          <!-- Large Glass Upload Card -->
+          <section class="upload-drop-card glass-panel" id="dashboard-dropzone">
+            <input type="file" id="dashboard-file-input" style="display: none;" accept=".pdf,.docx,.txt,.mp3,.wav" />
+            <div class="upload-drop-icon-wrap">
+              <i data-lucide="file-up" style="width: 36px; height: 36px;"></i>
+            </div>
+            <h2 class="upload-drop-title">Drop your lecture here</h2>
+            <p class="upload-drop-subtitle">PDF, TXT, DOCX or audio files (MP3, WAV)</p>
+            <button class="btn-primary" onclick="document.getElementById('dashboard-file-input').click();">
+              <i data-lucide="upload-cloud" style="width: 18px; height: 18px;"></i>
+              <span>Upload Lecture</span>
+            </button>
+            <div class="upload-drop-meta">
+              <span><i data-lucide="shield-check" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i> College-safe encryption</span>
+              <span>·</span>
+              <span><i data-lucide="zap" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i> Up to 100MB per lecture</span>
+              <span>·</span>
+              <span><i data-lucide="sparkles" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i> Multilingual AI transcription</span>
+            </div>
+          </section>
+
+          <!-- AI QUICK ACTIONS -->
+          <section style="margin-bottom: 2.25rem;">
+            <div class="section-heading-wrap">
+              <h2 class="section-title">
+                <i data-lucide="sparkles" style="width: 20px; height: 20px; color: var(--accent-cyan-light);"></i>
+                AI Quick Actions
+              </h2>
+              <span class="section-subtitle">Instant study tools powered by SmartLecture intelligence</span>
+            </div>
+
+            <div class="quick-actions-grid">
+              <!-- Action 1 -->
+              <a href="upload.html" class="glass-panel quick-action-card glass-card-interactive" data-action="notes">
+                <div class="quick-action-icon icon-blue">
+                  <i data-lucide="file-text" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div>
+                  <h3 class="quick-action-title">Generate Notes</h3>
+                  <p class="quick-action-desc">Transform raw lecture recordings or slide decks into concise, structured academic notes.</p>
+                </div>
+                <div class="quick-action-arrow">
+                  <span>Start Generation</span>
+                  <i data-lucide="arrow-right" style="width: 15px; height: 15px;"></i>
+                </div>
+              </a>
+
+              <!-- Action 2 -->
+              <a href="quiz.html" class="glass-panel quick-action-card glass-card-interactive" data-action="quiz">
+                <div class="quick-action-icon icon-violet">
+                  <i data-lucide="check-square" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div>
+                  <h3 class="quick-action-title">Create Quiz</h3>
+                  <p class="quick-action-desc">Generate customized MCQ practice tests with automated grading and explanations.</p>
+                </div>
+                <div class="quick-action-arrow">
+                  <span>Take Practice Quiz</span>
+                  <i data-lucide="arrow-right" style="width: 15px; height: 15px;"></i>
+                </div>
+              </a>
+
+              <!-- Action 3 -->
+              <a href="upload.html?mode=audio" class="glass-panel quick-action-card glass-card-interactive" data-action="transcribe">
+                <div class="quick-action-icon icon-cyan">
+                  <i data-lucide="mic" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div>
+                  <h3 class="quick-action-title">Transcribe Lecture</h3>
+                  <p class="quick-action-desc">Convert speech into verbatim text with speaker detection and key timestamp markers.</p>
+                </div>
+                <div class="quick-action-arrow">
+                  <span>Upload Audio</span>
+                  <i data-lucide="arrow-right" style="width: 15px; height: 15px;"></i>
+                </div>
+              </a>
+
+              <!-- Action 4 -->
+              <div class="glass-panel quick-action-card glass-card-interactive" data-action="explain">
+                <div class="quick-action-icon icon-amber">
+                  <i data-lucide="brain-circuit" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div>
+                  <h3 class="quick-action-title">Explain Topic</h3>
+                  <p class="quick-action-desc">Get instant intuitive analogies, diagrams, and definitions for difficult concepts.</p>
+                </div>
+                <div class="quick-action-arrow">
+                  <span>Ask AI Concept</span>
+                  <i data-lucide="arrow-right" style="width: 15px; height: 15px;"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- STATISTICS SECTION -->
+          <section style="margin-bottom: 2.5rem;">
+            <div class="section-heading-wrap">
+              <h2 class="section-title">
+                <i data-lucide="activity" style="width: 20px; height: 20px; color: var(--accent-violet);"></i>
+                Study Statistics
+              </h2>
+              <span class="section-subtitle">Real-time learning velocity</span>
+            </div>
+
+            <div class="stats-grid">
+              <div class="glass-panel stat-card">
+                <div class="stat-header">
+                  <span class="stat-label">Lectures Processed</span>
+                  <div class="stat-icon">
+                    <i data-lucide="folder-check" style="width: 18px; height: 18px; color: var(--accent-blue);"></i>
+                  </div>
+                </div>
+                <div class="stat-value stat-counter" data-target="24">0</div>
+                <div class="stat-meta">
+                  <span class="stat-trend-up">↑ +4 this week</span>
+                  <span>· 100% indexed</span>
+                </div>
+              </div>
+
+              <div class="glass-panel stat-card">
+                <div class="stat-header">
+                  <span class="stat-label">Notes Generated</span>
+                  <div class="stat-icon">
+                    <i data-lucide="book-marked" style="width: 18px; height: 18px; color: var(--accent-cyan-light);"></i>
+                  </div>
+                </div>
+                <div class="stat-value stat-counter" data-target="86">0</div>
+                <div class="stat-meta">
+                  <span class="stat-trend-up">↑ 98% accuracy</span>
+                  <span>· 6 subjects</span>
+                </div>
+              </div>
+
+              <div class="glass-panel stat-card">
+                <div class="stat-header">
+                  <span class="stat-label">Quizzes Completed</span>
+                  <div class="stat-icon">
+                    <i data-lucide="award" style="width: 18px; height: 18px; color: var(--accent-violet);"></i>
+                  </div>
+                </div>
+                <div class="stat-value stat-counter" data-target="31">0</div>
+                <div class="stat-meta">
+                  <span class="stat-trend-up">↑ Top 5%</span>
+                  <span>in class rank</span>
+                </div>
+              </div>
+
+              <div class="glass-panel stat-card">
+                <div class="stat-header">
+                  <span class="stat-label">Average Score</span>
+                  <div class="stat-icon">
+                    <i data-lucide="target" style="width: 18px; height: 18px; color: #10b981;"></i>
+                  </div>
+                </div>
+                <div class="stat-value stat-counter" data-target="84" data-suffix="%">0%</div>
+                <div class="stat-meta">
+                  <span class="stat-trend-up">↑ +6.2%</span>
+                  <span>vs last semester</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- RECENT LECTURES & AI LEARNING INSIGHT -->
+          <div class="dashboard-split-grid">
+            <!-- Recent Lectures -->
+            <section class="glass-panel recent-lectures-panel">
+              <div class="section-heading-wrap" style="margin-bottom: 0.5rem;">
+                <h2 class="section-title">
+                  <i data-lucide="clock" style="width: 20px; height: 20px; color: var(--accent-blue);"></i>
+                  Recent Lectures
+                </h2>
+                <a href="notes.html" class="btn-glass btn-glass-sm">View All Notes</a>
+              </div>
+
+              <div class="recent-lectures-list">
+                <!-- Card 1: Operating Systems -->
+                <div class="lecture-card">
+                  <div class="lecture-info-wrap">
+                    <div class="lecture-subject-icon">
+                      <i data-lucide="cpu" style="width: 22px; height: 22px;"></i>
+                    </div>
+                    <div>
+                      <h3 class="lecture-title">Operating Systems</h3>
+                      <div class="lecture-metadata">
+                        <span>Last processed: Today</span>
+                        <span>·</span>
+                        <span class="status-badge status-ready"><i data-lucide="check" style="width:13px;height:13px;"></i> Notes Ready</span>
+                        <span>·</span>
+                        <span class="status-badge status-ready"><i data-lucide="check" style="width:13px;height:13px;"></i> Quiz Ready</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="lecture-actions">
+                    <a href="notes.html?id=os-01" class="btn-glass btn-glass-sm">Open Notes</a>
+                    <a href="quiz.html?id=os-01" class="btn-primary btn-glass-sm" style="padding: 0.45rem 0.85rem;">Take Quiz</a>
+                  </div>
+                </div>
+
+                <!-- Card 2: Data Structures -->
+                <div class="lecture-card">
+                  <div class="lecture-info-wrap">
+                    <div class="lecture-subject-icon" style="color: var(--accent-violet);">
+                      <i data-lucide="git-branch" style="width: 22px; height: 22px;"></i>
+                    </div>
+                    <div>
+                      <h3 class="lecture-title">Data Structures</h3>
+                      <div class="lecture-metadata">
+                        <span>Last processed: Yesterday</span>
+                        <span>·</span>
+                        <span class="status-badge status-ready"><i data-lucide="check" style="width:13px;height:13px;"></i> Notes Ready</span>
+                        <span>·</span>
+                        <span class="status-badge status-pending"><i data-lucide="clock-4" style="width:13px;height:13px;"></i> Quiz Pending</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="lecture-actions">
+                    <a href="notes.html?id=dsa-02" class="btn-glass btn-glass-sm">Open Notes</a>
+                    <a href="quiz.html?id=dsa-02" class="btn-primary btn-glass-sm" style="padding: 0.45rem 0.85rem;">Generate Quiz</a>
+                  </div>
+                </div>
+
+                <!-- Card 3: Java Programming -->
+                <div class="lecture-card">
+                  <div class="lecture-info-wrap">
+                    <div class="lecture-subject-icon" style="color: var(--accent-cyan-light);">
+                      <i data-lucide="code-2" style="width: 22px; height: 22px;"></i>
+                    </div>
+                    <div>
+                      <h3 class="lecture-title">Java Programming</h3>
+                      <div class="lecture-metadata">
+                        <span>Last processed: 3 days ago</span>
+                        <span>·</span>
+                        <span class="status-badge status-ready"><i data-lucide="check" style="width:13px;height:13px;"></i> Notes Ready</span>
+                        <span>·</span>
+                        <span class="status-badge status-ready"><i data-lucide="check" style="width:13px;height:13px;"></i> Quiz Ready</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="lecture-actions">
+                    <a href="notes.html?id=java-03" class="btn-glass btn-glass-sm">Open Notes</a>
+                    <a href="quiz.html?id=java-03" class="btn-primary btn-glass-sm" style="padding: 0.45rem 0.85rem;">Take Quiz</a>
+                  </div>
+                </div>
+
+                <!-- Card 4: Database Management -->
+                <div class="lecture-card">
+                  <div class="lecture-info-wrap">
+                    <div class="lecture-subject-icon" style="color: #f59e0b;">
+                      <i data-lucide="database" style="width: 22px; height: 22px;"></i>
+                    </div>
+                    <div>
+                      <h3 class="lecture-title">Database Management Systems</h3>
+                      <div class="lecture-metadata">
+                        <span>Last processed: 5 days ago</span>
+                        <span>·</span>
+                        <span class="status-badge status-ready"><i data-lucide="check" style="width:13px;height:13px;"></i> Notes Ready</span>
+                        <span>·</span>
+                        <span class="status-badge status-ready"><i data-lucide="check" style="width:13px;height:13px;"></i> Quiz Ready</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="lecture-actions">
+                    <a href="notes.html?id=dbms-04" class="btn-glass btn-glass-sm">Open Notes</a>
+                    <a href="quiz.html?id=dbms-04" class="btn-primary btn-glass-sm" style="padding: 0.45rem 0.85rem;">Take Quiz</a>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- AI LEARNING INSIGHT CARD -->
+            <section class="glass-panel ai-insight-panel">
+              <div class="ai-aura"></div>
+              <div>
+                <div class="ai-insight-badge">
+                  <div class="ai-pulse-dot"></div>
+                  <span>🧠 AI LEARNING INSIGHT</span>
+                </div>
+
+                <div class="insight-body">
+                  <p style="margin-bottom: 0.85rem;">
+                    You are performing well in <strong>Java</strong> and <strong>Data Structures</strong>.
+                  </p>
+                  <p style="margin-bottom: 0.85rem; color: #a5f3fc;">
+                    Your quiz accuracy has improved by <strong>12%</strong> this week.
+                  </p>
+                </div>
+
+                <div class="insight-recommendation-box">
+                  <div class="rec-title">Recommended Revision</div>
+                  <div class="rec-text">
+                    Revise <strong>Linked Lists</strong> and <strong>Exception Handling</strong> before your upcoming Friday lab test.
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+                <a href="quiz.html?focus=weak" class="btn-primary" style="flex: 1; font-size: 0.85rem; padding: 0.65rem 1rem;">
+                  <i data-lucide="zap" style="width: 15px; height: 15px;"></i>
+                  <span>Quick Practice Quiz</span>
+                </a>
+                <a href="notes.html?search=Linked%20Lists" class="btn-glass" style="font-size: 0.85rem; padding: 0.65rem 1rem;">
+                  <span>Review Notes</span>
+                </a>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/app.js"></script>
+    <script src="/js/dashboard.js"></script>
+  </body>
+</html>
